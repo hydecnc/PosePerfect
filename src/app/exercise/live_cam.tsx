@@ -1,34 +1,58 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import * as posenet from "@tensorflow-models/posenet";
+import "@tensorflow/tfjs-backend-webgl"; // Ensure this backend is set up
 
-export default function ExercisePage() {
+export default function LiveCamera() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    // Set up the webcam stream
     async function setupCamera() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          await videoRef.current.play();
         }
       } catch (err) {
         console.error("Error accessing webcam:", err);
       }
     }
 
-    setupCamera();
+    // Load PoseNet and start detection
+    async function loadAndDetectPose() {
+      await setupCamera();
+      const net = await posenet.load({
+        inputResolution: { width: 640, height: 480 },
+        scale: 0.5,
+      });
+
+      async function detectPose() {
+        if (videoRef.current) {
+          // Estimate the pose from the current video frame
+          const pose = await net.estimateSinglePose(videoRef.current, { flipHorizontal: false });
+          console.log("Detected Pose:", pose);
+        }
+        requestAnimationFrame(detectPose);
+      }
+
+      detectPose();
+    }
+
+    loadAndDetectPose();
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black">
-      <h1 className="text-white text-3xl mb-4">Live Camera Feed</h1>
+    <div style={{ width: 640, height: 480 }}>
       <video
         ref={videoRef}
-        autoPlay
+        width={640}
+        height={480}
         playsInline
         muted
-        className="w-full max-w-lg rounded-xl border-4 border-white"
+        style={{ borderRadius: "8px" }}
       />
     </div>
   );
