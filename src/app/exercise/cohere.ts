@@ -16,8 +16,15 @@ export class CohereInstance {
    * @param message
    * @returns Cohere's response or an empty string if cohere does not respond.
    */
-  async sendMessage(message: string) {
-    this.messages.push({ role: "system", content: message });
+  async sendMessage(message: string, systemMessage: boolean = false) {
+    const role = systemMessage ? "system" : "user";
+    this.messages.push({ role, content: message });
+
+    // Only send non-system messages to cohere
+    if (systemMessage) {
+      return "";
+    }
+
     const response = await this.cohere.chat({
       model: "command-r-plus-08-2024",
       messages: this.messages,
