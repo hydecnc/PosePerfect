@@ -65,15 +65,13 @@ export default function LiveCamera() {
   }, []);
 
   return (
-    <div className={styles.camerDisplay}>
-      <video
-        ref={videoRef}
-        width={640}
-        height={480}
-        playsInline
-        muted
-        style={{ borderRadius: "8px" }}
-      />
-    </div>
+    <video
+      className={styles.cameraDisplay}
+      ref={videoRef}
+      width={640}
+      height={480}
+      playsInline
+      muted
+    />
   );
 }
