@@ -6,18 +6,29 @@
   --button-primary-hover: #383838;
   --button-secondary-hover: #f2f2f2;
 
-  --gap: 10px;
+  --gap: 30px;
   --nice-box-border: 2px;
 
   display: grid;
-  grid-template-rows: 10px 1fr 10px;
-  padding: 0 10px;
+  /* grid-template-rows: 10px 1fr 10px; */
+  grid-template-rows: var(--gap) 1fr var(--gap);
+  padding: 0 var(--gap);
   align-items: center;
   justify-items: center;
   min-height: 100svh;
   font-family: var(--font-geist-sans);
 }
 
+@media (prefers-color-scheme: dark) {
+  .page {
+    --gray-rgb: 255, 255, 255;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
 .main {
   display: flex;
   flex-direction: row;
@@ -39,25 +50,43 @@
   height: 100%;
   border-radius: 15px;
 }
+
 .niceBox {
-  border: var(--nice-box-border) solid;
-  border-radius: 15px;
+  /* border: var(--nice-box-border) solid; */
+  border-radius: 5px;
   box-shadow:
     0 4px 6px -1px rgb(0 0 0 / 0 1),
     0 2px -2px rgb(0 0 0 / 0.1);
   height: 100%;
+  background-color: #f9f9f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  .niceBox {
+    background-color: #353839;
+  }
 }
 
 .exerciseInfo {
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: space-between;
   gap: var(--gap);
   width: 30%;
 }
 
 .exerciseName {
+  height: 10%;
+  font-size: 2rem;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.chatLog {
   padding: 10px;
   text-align: center;
 }

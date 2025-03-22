@@ -10,9 +10,11 @@ export default function Home() {
         </div>
         <div className={styles.exerciseInfo}>
           <div className={`${styles.exerciseName} ${styles.niceBox}`}>
-            Push Up
+            <div>Squat Exercises</div>
           </div>
-          <div className={`${styles.chatLog} ${styles.niceBox}`}>Push Up</div>
+          <div className={`${styles.chatLog} ${styles.niceBox}`}>
+            Feedback + Instructions
+          </div>
         </div>
       </main>
     </div>
