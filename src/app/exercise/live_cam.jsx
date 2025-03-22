@@ -5,18 +5,12 @@ import styles from "./exercise.module.css";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl"; // Ensure this backend is set up
 import { getBetterSide } from "./preprocess"; 
-import {oneSideData, twoSideData, getSideKeypoints} from "./exerciseProcessor"; // import your functions
-import { data } from "@tensorflow/tfjs";
-
-const data_frame: any[] = [];
-
+import { oneSideData, twoSideData } from "./exerciseProcessor"; // import your functions
 
 let hasCheckedSide = false; // new flag
 let sideChoice = ""; // store best side
-interface Props {
-  exercise: string;
-}
-export default function LiveCamera({exercise}:Props) {
+
+export default function LiveCamera({exercise}) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -65,15 +59,9 @@ export default function LiveCamera({exercise}:Props) {
               if (exercise == "squat" || exercise == "rdl" || exercise == "lunge") {
               
                 // Call your function here
-                const selected = getSideKeypoints(pose, "left" );
-                console.log("Selected side keypoints:", selected);
-                oneSideData(pose, selected, data_frame);
 
               }
               else {
-                const selected_left = getSideKeypoints(pose,  "left" );
-                const selected_right = getSideKeypoints(pose,  "right" );
-                twoSideData(pose, selected_left, selected_right, data_frame);
 
               }
         }
