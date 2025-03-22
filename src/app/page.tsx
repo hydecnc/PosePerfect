@@ -1,13 +1,10 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import PoseCamera from "./exercise/live_cam"; // adjust path if needed
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-  <div className={styles.title}>Gymmi</div>
-      <PoseCamera />
         <div className={styles.title}>Gymmi</div>
         <div className={styles.start}>
           <a href="/exercise">

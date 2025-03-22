@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import styles from "./exercise.module.css";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl"; // Ensure this backend is set up
 
@@ -11,7 +12,9 @@ export default function LiveCamera() {
     // Set up the webcam stream
     async function setupCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
@@ -24,15 +27,22 @@ export default function LiveCamera() {
     // Load PoseNet and start detection
     async function loadAndDetectPose() {
       await setupCamera();
-      const net = await posenet.load({
+      let config: posenet.ModelConfig = {
+        architecture: "MobileNetV1",
+        outputStride: 16,
         inputResolution: { width: 640, height: 480 },
-        scale: 0.5,
-      });
+      };
+      const net = await posenet.load(config);
+      // const net = await posenet.load({
+      //   inputResolution: { width: 640, height: 480 },
+      // });
 
       async function detectPose() {
         if (videoRef.current) {
           // Estimate the pose from the current video frame
-          const pose = await net.estimateSinglePose(videoRef.current, { flipHorizontal: false });
+          const pose = await net.estimateSinglePose(videoRef.current, {
+            flipHorizontal: false,
+          });
           console.log("Detected Pose:", pose);
         }
         requestAnimationFrame(detectPose);
@@ -45,7 +55,7 @@ export default function LiveCamera() {
   }, []);
 
   return (
-    <div style={{ width: 640, height: 480 }}>
+    <div className={styles.camerDisplay}>
       <video
         ref={videoRef}
         width={640}
