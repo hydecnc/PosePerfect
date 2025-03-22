@@ -1,6 +1,7 @@
 import * as posenet from "@tensorflow-models/posenet";
 
 const minScore = 0.6;
+const pose_obj_data=[];
 
 export function avgScore(side: Record<string, posenet.Keypoint | undefined>): number {
   const scores: number[] = [];
