@@ -1,66 +1,37 @@
-// Code for pre-processing the pose information of the user.
+import * as posenet from "@tensorflow-models/posenet";
 
 const minScore = 0.6;
 
-interface Position {
-  x: number;
-  y: number;
+export function avgScore(side: Record<string, posenet.Keypoint | undefined>): number {
+  const scores: number[] = [];
+  Object.values(side).forEach((kp) => {
+    if (kp && kp.score >= minScore) scores.push(kp.score);
+  });
+  return scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
 }
 
-interface KeyPoint {
-  part: string;
-  position: Position;
-  score: number;
-}
-
-interface BodySide {
-  shoulder: KeyPoint;
-  elbow: KeyPoint;
-  wrist: KeyPoint;
-  hip: KeyPoint;
-  knee: KeyPoint;
-  ankle: KeyPoint;
-}
-
-interface SelectedSide extends BodySide {
-  side: 'left' | 'right';
-}
-
-function selectSide(keyPoints: KeyPoint[]): SelectedSide | null {
-  // Key parts we need: shoulder, hip, knee, and ankle.
-  const left: BodySide = {
-    shoulder: keyPoints.find(k => k.part === 'leftShoulder')!,
-    elbow: keyPoints.find(k => k.part === 'leftElbow')!,
-    wrist: keyPoints.find(k => k.part === 'leftWrist')!,
-    hip: keyPoints.find(k => k.part === 'leftHip')!,
-    knee: keyPoints.find(k => k.part === 'leftKnee')!,
-    ankle: keyPoints.find(k => k.part === 'leftAnkle')!,
-  };
-  const right: BodySide = {
-    shoulder: keyPoints.find(k => k.part === 'rightShoulder')!,
-    elbow: keyPoints.find(k => k.part === 'rightElbow')!,
-    wrist: keyPoints.find(k => k.part === 'rightWrist')!,
-    hip: keyPoints.find(k => k.part === 'rightHip')!,
-    knee: keyPoints.find(k => k.part === 'rightKnee')!,
-    ankle: keyPoints.find(k => k.part === 'rightAnkle')!,
+export function getBetterSide(pose: posenet.Pose): "left" | "right" | "unknown" {
+  const left = {
+    shoulder: pose.keypoints.find((k) => k.part === "leftShoulder"),
+    elbow: pose.keypoints.find((k) => k.part === "leftElbow"),
+    wrist: pose.keypoints.find((k) => k.part === "leftWrist"),
+    hip: pose.keypoints.find((k) => k.part === "leftHip"),
+    knee: pose.keypoints.find((k) => k.part === "leftKnee"),
+    ankle: pose.keypoints.find((k) => k.part === "leftAnkle"),
   };
 
-  // Calculate average confidence for each side (only count those above threshold)
-  const avgScore = (side: BodySide): number => {
-    const scores: number[] = [];
-    Object.values(side).forEach((kp: KeyPoint | undefined) => {
-      if (kp && kp.score >= minScore) scores.push(kp.score);
-    });
-    return scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
+  const right = {
+    shoulder: pose.keypoints.find((k) => k.part === "rightShoulder"),
+    elbow: pose.keypoints.find((k) => k.part === "rightElbow"),
+    wrist: pose.keypoints.find((k) => k.part === "rightWrist"),
+    hip: pose.keypoints.find((k) => k.part === "rightHip"),
+    knee: pose.keypoints.find((k) => k.part === "rightKnee"),
+    ankle: pose.keypoints.find((k) => k.part === "rightAnkle"),
   };
 
   const leftAvg = avgScore(left);
   const rightAvg = avgScore(right);
 
-  if (leftAvg >= rightAvg && leftAvg > 0) {
-    return { ...left, side: 'left' };
-  } else if (rightAvg > 0) {
-    return { ...right, side: 'right' };
-  }
-  return null;
+  if (leftAvg === 0 && rightAvg === 0) return "unknown";
+  return leftAvg >= rightAvg ? "left" : "right";
 }
