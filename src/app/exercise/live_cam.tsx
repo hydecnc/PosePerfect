@@ -33,9 +33,6 @@ export default function LiveCamera() {
         inputResolution: { width: 640, height: 480 },
       };
       const net = await posenet.load(config);
-      // const net = await posenet.load({
-      //   inputResolution: { width: 640, height: 480 },
-      // });
 
       async function detectPose() {
         if (videoRef.current) {
@@ -55,15 +52,6 @@ export default function LiveCamera() {
   }, []);
 
   return (
-    <div className={styles.camerDisplay}>
-      <video
-        ref={videoRef}
-        width={640}
-        height={480}
-        playsInline
-        muted
-        style={{ borderRadius: "8px" }}
-      />
-    </div>
+    <video ref={videoRef} playsInline muted className={styles.cameraDisplay} />
   );
 }

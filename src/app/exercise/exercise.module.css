@@ -29,10 +29,18 @@
   height: 100%;
 }
 
-.cameraDisplay {
+.cameraDisplayContainer {
   width: 70%;
+  padding: 0;
 }
 
+.cameraDisplay {
+  min-width: 640px;
+  min-height: 480px;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+}
 .niceBox {
   border: var(--nice-box-border) solid;
   border-radius: 15px;
@@ -49,4 +57,9 @@
   justify-content: space-between;
   gap: var(--gap);
   width: 30%;
+}
+
+.exerciseName {
+  padding: 10px;
+  text-align: center;
 }
