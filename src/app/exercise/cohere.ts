@@ -14,7 +14,7 @@ const exercisesOptions = [
   "squat",
   "sit up",
   "push up",
-  "pull up"
+  "deadlift"
 ]
 
 const detectExercisePrompt = `Out of the following options, which exercise is the user performing? ${exercisesOptions.join(", ")}`
@@ -46,17 +46,13 @@ export async function detectExercise(exerciseImage: string) {
   console.log(util.inspect(response, {colors: true, depth: 20}));
 }
 
-export async function getExercise(exerciseName: string) {
+export async function getExerciseFeedback(exerciseName: string, actions: string[]) {
   const response = await cohere.chat({
     model: 'command-r-plus-08-2024',
     messages: [
       {
         role: "system",
-        content: "You are a helpful assistant that generates workout plans, one sentence at a time.",
-      },
-      {
-        role: 'user',
-        content: `Generate a workout plan for ${exerciseName}`,
+        content: `The user is preforming the exercise ${exerciseName}. The user should do these actions: ${actions.join(", ")}. Please explain the first step of the actions to the user in a human readable way.`
       },
     ],
   });
