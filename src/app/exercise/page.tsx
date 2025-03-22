@@ -1,5 +1,5 @@
 import styles from "./exercise.module.css";
-import PoseCamera from "./live_cam"; // adjust path if needed
+import PoseCamera from "./live_cam";
 
 export default function Home() {
   return (

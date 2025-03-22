@@ -1,9 +1,11 @@
 import * as posenet from "@tensorflow-models/posenet";
 
 const minScore = 0.6;
-const pose_obj_data=[];
+const pose_obj_data = [];
 
-export function avgScore(side: Record<string, posenet.Keypoint | undefined>): number {
+export function avgScore(
+  side: Record<string, posenet.Keypoint | undefined>,
+): number {
   const scores: number[] = [];
   Object.values(side).forEach((kp) => {
     if (kp && kp.score >= minScore) scores.push(kp.score);
@@ -11,7 +13,9 @@ export function avgScore(side: Record<string, posenet.Keypoint | undefined>): nu
   return scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
 }
 
-export function getBetterSide(pose: posenet.Pose): "left" | "right" | "unknown" {
+export function getBetterSide(
+  pose: posenet.Pose,
+): "left" | "right" | "unknown" {
   const left = {
     shoulder: pose.keypoints.find((k) => k.part === "leftShoulder"),
     elbow: pose.keypoints.find((k) => k.part === "leftElbow"),

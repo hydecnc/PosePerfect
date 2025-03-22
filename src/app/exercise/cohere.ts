@@ -10,10 +10,10 @@ export class CohereInstance {
     });
     this.messages = [];
   }
-  
+
   /**
    * Sends a message to cohere as a system prompt.
-   * @param message 
+   * @param message
    * @returns Cohere's response or an empty string if cohere does not respond.
    */
   async sendMessage(message: string) {
@@ -26,8 +26,11 @@ export class CohereInstance {
     if (!response.message.content) {
       return "";
     }
-    
-    this.messages.push({ role: "assistant", content: response.message.content[0].text });
+
+    this.messages.push({
+      role: "assistant",
+      content: response.message.content[0].text,
+    });
     return response.message.content[0].text;
   }
 }

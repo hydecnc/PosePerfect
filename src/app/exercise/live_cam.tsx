@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import styles from "./exercise.module.css";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl"; // Ensure this backend is set up
-import { getBetterSide } from "./preprocess"; 
+import { getBetterSide } from "./preprocess";
 
 let hasCheckedSide = false; // new flag
 let sideChoice = ""; // store best side
@@ -37,9 +37,6 @@ export default function LiveCamera() {
         inputResolution: { width: 640, height: 480 },
       };
       const net = await posenet.load(config);
-      // const net = await posenet.load({
-      //   inputResolution: { width: 640, height: 480 },
-      // });
 
       async function detectPose() {
         if (videoRef.current) {
@@ -47,23 +44,21 @@ export default function LiveCamera() {
           const pose = await net.estimateSinglePose(videoRef.current, {
             flipHorizontal: false,
           });
-        
-              console.log("Pose:", pose);
-              // Check side confidence only ONCE
-              if (sideChoice === "") {
-                const result = getBetterSide(pose);
-                if (result !== "unknown") {
-                  sideChoice = result;
-                  console.log("✅ Chosen side:", sideChoice);
-                }
-              }
-           
+
+          console.log("Pose:", pose);
+          // Check side confidence only ONCE
+          if (sideChoice === "") {
+            const result = getBetterSide(pose);
+            if (result !== "unknown") {
+              sideChoice = result;
+              console.log("✅ Chosen side:", sideChoice);
+            }
+          }
         }
         requestAnimationFrame(detectPose);
       }
 
       detectPose();
-      
     }
 
     loadAndDetectPose();

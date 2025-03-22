@@ -8,7 +8,8 @@ import * as fs from "fs";
 const HF_TOKEN = process.env.HF_TOKEN;
 
 // 2. Define the Inference API URL
-const API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits";
+const API_URL =
+  "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits";
 
 /**
  * Sends text to the Hugging Face Inference API for TTS
@@ -20,8 +21,8 @@ async function textToSpeech(text: string): Promise<Buffer> {
   }
 
   const headers = {
-    "Authorization": `Bearer ${HF_TOKEN}`,
-    "Content-Type": "application/json"
+    Authorization: `Bearer ${HF_TOKEN}`,
+    "Content-Type": "application/json",
   };
 
   const payload = { inputs: text };
@@ -34,7 +35,9 @@ async function textToSpeech(text: string): Promise<Buffer> {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Request failed with status ${response.status}: ${errorText}`);
+    throw new Error(
+      `Request failed with status ${response.status}: ${errorText}`,
+    );
   }
 
   // Convert the ArrayBuffer to a Buffer
@@ -44,7 +47,8 @@ async function textToSpeech(text: string): Promise<Buffer> {
 
 async function main() {
   try {
-    const sampleText = "To improve your squat form, focus on keeping your chest up and your back straight throughout the movement. Push your hips back as if sitting into a chair, and ensure your knees track over your toes without caving inward. Engage your core to maintain stability, and avoid letting your heels lift off the ground. Practice with bodyweight squats before adding weights to perfect your technique.";
+    const sampleText =
+      "To improve your squat form, focus on keeping your chest up and your back straight throughout the movement. Push your hips back as if sitting into a chair, and ensure your knees track over your toes without caving inward. Engage your core to maintain stability, and avoid letting your heels lift off the ground. Practice with bodyweight squats before adding weights to perfect your technique.";
     const audioBytes = await textToSpeech(sampleText);
 
     fs.writeFileSync("output.wav", audioBytes);
