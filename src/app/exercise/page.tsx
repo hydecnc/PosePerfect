@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={`${styles.cameraDisplay} ${styles.niceBox}`}>
+        <div className={`${styles.cameraDisplayContainer} ${styles.niceBox}`}>
           <PoseCamera />
         </div>
         <div className={styles.exerciseInfo}>
