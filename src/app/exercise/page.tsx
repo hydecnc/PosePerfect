@@ -13,7 +13,7 @@ export default function ExercisePage() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={`${styles.cameraDisplayContainer} ${styles.niceBox}`}>
-        <PoseCamera exercise={exercise} />
+        <PoseCamera exercise={exercise} exercise="squat" />
         </div>
         <div className={styles.exerciseInfo}>
           <div className={`${styles.exerciseName} ${styles.niceBox}`}>
