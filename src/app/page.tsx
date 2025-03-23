@@ -1,40 +1,37 @@
 "use client";
 
-import Image from "next/image";
-import styles from "./page.module.css";
-import { useState } from "react";
-import PoseCamera from "./exercise/live_cam"; // adjust path if needed
+import { useState } from 'react';
+import Link from 'next/link';
+import styles from './page.module.css';
 
 export default function Home() {
+  // State to capture the user's selection
   const [selectedExercise, setSelectedExercise] = useState("squat");
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.title}>Gymmi</div>
-        
-        {/* Dropdown for selecting an exercise */}
         <div className={styles.start}>
           <select
             value={selectedExercise}
             onChange={(e) => setSelectedExercise(e.target.value)}
           >
             <option value="squat">Squat</option>
-            <option value="deadlifts">Deadlifts</option>
+            <option value="rdl">Romanian Deadlifts</option>
             <option value="lunges">Lunges</option>
             <option value="planks">Planks</option>
-            <option value="push-ups">Push-ups</option>
-            <option value="shoulder press">Shoulder Press</option>
+            <option value="pushups">Push-ups</option>
+            <option value="shoulder_press">Shoulder Press</option>
           </select>
-        </div>
-
-        {/* PoseCamera receives the selected exercise as a prop */}
-        <PoseCamera exercise={selectedExercise} />
-        
-        <div className={styles.start}>
-          <a href="/exercise">
-            <button>Get started here:</button>
-          </a>
+          <Link
+            href={{
+              pathname: '/exercise',
+              query: { exercise: selectedExercise }
+            }}
+          >
+            <button className={styles.start}>Get started here:</button>
+          </Link>
         </div>
       </main>
       <footer className={styles.footer}>
@@ -43,13 +40,6 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Image
-            aria-hidden
-            src="/github-mark.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
           Link to Repo
         </a>
       </footer>

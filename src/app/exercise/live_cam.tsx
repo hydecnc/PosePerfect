@@ -53,28 +53,24 @@ export default function LiveCamera({exercise}:Props) {
             flipHorizontal: false,
           });
         
-              console.log("Pose:", pose);
-              // Check side confidence only ONCE
-              if (sideChoice === "") {
-                const result = getBetterSide(pose);
-                if (result !== "unknown") {
-                  sideChoice = result;
-                  console.log("✅ Chosen side:", sideChoice);
-                }
-              }
-              if (exercise == "squat" || exercise == "rdl" || exercise == "lunge") {
+              if (exercise == "squat" || exercise == "rdl" || exercise == "lunges") {
               
                 // Call your function here
+                console.log("ONE SELECTION: ");
                 const selected = getSideKeypoints(pose, "left" );
-                console.log("Selected side keypoints:", selected);
+        
                 oneSideData(pose, selected, data_frame);
 
               }
-              else {
+              else if (exercise == "pushups" || exercise == "shoulder_press") {
+                console.log("TWO SELECTION: ");
                 const selected_left = getSideKeypoints(pose,  "left" );
                 const selected_right = getSideKeypoints(pose,  "right" );
                 twoSideData(pose, selected_left, selected_right, data_frame);
 
+              }
+              else{
+                console.error("Invalid exercise");
               }
         }
         requestAnimationFrame(detectPose);
@@ -88,15 +84,10 @@ export default function LiveCamera({exercise}:Props) {
   }, []);
 
   return (
-    <div className={styles.camerDisplay}>
-      <video
+   
+      <video className= {styles.cameraDisplay}
         ref={videoRef}
-        width={640}
-        height={480}
-        playsInline
-        muted
-        style={{ borderRadius: "8px" }}
+      
       />
-    </div>
   );
 }
