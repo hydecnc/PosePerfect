@@ -152,3 +152,39 @@ a.secondary {
     filter: invert();
   }
 }
+
+.start select {
+  /* Match the button's rounded corners and padding */
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 1rem;
+
+  /* Subtle border and box-shadow for a modern feel */
+  border: 2px solid var(--gray-alpha-200);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px -2px rgb(0 0 0 / 0.1);
+
+  /* Use theme foreground/background for text and background color */
+  background: var(--background);
+  color: var(--foreground);
+
+  /* Remove default webkit appearance if you want a cleaner look */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Fix for long dropdown text truncation on some browsers */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+/* Hover/focus states for better user feedback */
+.start select:hover,
+.start select:focus {
+  background: var(--gray-alpha-100);
+  outline: none; /* remove the blue outline on focus if you prefer */
+}
+

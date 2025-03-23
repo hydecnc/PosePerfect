@@ -33,8 +33,6 @@ export function oneSideData(pose:any, selected:any, data:any) {
 }
 export function twoSideData(pose:any, left:any, right:any, data:any) {
 
-    // Example calculation: (replace with your actual logic)
-    // Let's say we compute a simple "depth" value based on hip and knee positions.
     const leftHip = pose.keypoints.find((kp:any) => kp.part === "leftHip");
     const leftKnee = pose.keypoints.find((kp:any) => kp.part === "leftKnee");
     const depth = leftHip && leftKnee ? Math.abs(leftHip.position.y - leftKnee.position.y) : 0;
