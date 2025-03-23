@@ -6,7 +6,7 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={`${styles.cameraDisplayContainer} ${styles.niceBox}`}>
-          <PoseCamera />
+          <PoseCamera exercise="squat" />
         </div>
         <div className={styles.exerciseInfo}>
           <div className={`${styles.exerciseName} ${styles.niceBox}`}>
