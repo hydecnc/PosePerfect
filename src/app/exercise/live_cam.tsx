@@ -11,6 +11,8 @@ import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
 
 const data_frame: any[] = [];
 
+import { HfInference } from "@huggingface/inference";
+const hf = new HfInference(process.env.VITE_HUGGINGFACE_API_KEY);
 
 let hasCheckedSide = false; // new flag
 let sideChoice = ""; // store best side
@@ -25,6 +27,7 @@ export default function LiveCamera({exercise}:Props) {
 
     // Function to be called every 30 seconds
     function aiApiCall() {
+      
       console.log("API CALLED Here");
       // Optionally, clear the data after calling the API
       data_frame.splice(0, data_frame.length);

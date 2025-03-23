@@ -1,3 +1,15 @@
+:root {
+  --primary-color: #00aaff;      /* A vibrant teal-blue */
+  --secondary-color: #0077cc;    /* A darker variant */
+  --background: #ffffff;         /* White background */
+  --foreground: #333333;         /* Dark text */
+}
+.title {
+  font-size: 4em;
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: bold;
+}
 .page {
   --gray-rgb: 255, 255, 255;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
@@ -45,32 +57,42 @@
   font-weight: 600;
 }
 
-.title {
-  font-size: 6em;
-  text-align: center;
-}
 
 .start {
   align-self: center;
 }
-
 .start button {
   border-radius: 15px;
   padding: 10px;
   font-size: 1rem;
+  background: var(--primary-color);
+  color: var(--background);
   box-shadow:
     0 4px 6px -1px rgb(0 0 0 / 0.1),
     0 2px -2px rgb(0 0 0 / 0.1);
+  border: none;
+  transition: background 0.3s ease;
 }
 
 .start button:hover {
-  background: var(--button-secondary-hover);
+  background: var(--secondary-color);
 }
 
+
 a.primary {
-  background: var(--foreground);
+  background: var(--primary-color);
   color: var(--background);
   gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.primary:hover {
+    background: var(--secondary-color);
+  }
 }
 
 a.secondary {
