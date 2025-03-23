@@ -8,6 +8,9 @@ import { getBetterSide } from "./preprocess";
 import {oneSideData, twoSideData, getSideKeypoints} from "./exerciseProcessor"; // import your functions
 import { data } from "@tensorflow/tfjs";
 import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
+import { CohereInstance } from "./cohere"
+import { SquatExercise } from "./poses"
+import { GetCohereKey } from "./keys"
 
 const data_frame: any[] = [];
 
@@ -53,6 +56,9 @@ export default function LiveCamera({exercise}:Props) {
         inputResolution: { width: 640, height: 480 },
       };
       const net = await posenet.load(config);
+      const cohereKey = await GetCohereKey();
+      const cohere = new CohereInstance(cohereKey);
+      const exercise = new SquatExercise(cohere);
 
       // Start the interval that calls aiApiCall every 10 seconds
       apiInterval = window.setInterval(() => {
@@ -65,29 +71,39 @@ export default function LiveCamera({exercise}:Props) {
           const pose = await net.estimateSinglePose(videoRef.current, {
             flipHorizontal: false,
           });
-        
-              if (exercise == "squat" || exercise == "rdl" || exercise == "lunges") {
+          const result = await exercise.evaluate(pose, cohere);
+          if (result) {
+            console.log(result)
+          }
+          
+
+          
+              // if (exercise == "squat" || exercise == "rdl" || exercise == "lunges") {
               
-                // Call your function here
-                const selected = getSideKeypoints(pose, "left" );
+              //   // Call your function here
+              //   const selected = getSideKeypoints(pose, "left" );
         
-                oneSideData(pose, selected, data_frame);
+              //   oneSideData(pose, selected, data_frame);
 
-              }
-              else if (exercise == "pushups" || exercise == "shoulder_press") {
-                const selected_left = getSideKeypoints(pose,  "left" );
-                const selected_right = getSideKeypoints(pose,  "right" );
-                twoSideData(pose, selected_left, selected_right, data_frame);
+              // }
+              // else if (exercise == "pushups" || exercise == "shoulder_press") {
+              //   const selected_left = getSideKeypoints(pose,  "left" );
+              //   const selected_right = getSideKeypoints(pose,  "right" );
+              //   twoSideData(pose, selected_left, selected_right, data_frame);
 
-              }
-              else{
-                console.error("Invalid exercise");
-              }
+              // }
+              // else{
+              //   console.error("Invalid exercise");
+              // }
         }
-        requestAnimationFrame(detectPose);
+        // requestAnimationFrame(detectPose);
       }
 
-      detectPose();
+      while (true) {
+        detectPose();
+
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
       
     }
 

@@ -1,12 +1,13 @@
+"use client"
 import { CohereClientV2, Cohere } from "cohere-ai";
 
 export class CohereInstance {
   private cohere: CohereClientV2;
   private messages: Cohere.ChatMessages;
 
-  constructor() {
+  constructor(token: string) {
     this.cohere = new CohereClientV2({
-      token: process.env.COHERE_API_KEY,
+      token,
     });
     this.messages = [];
   }
