@@ -32,7 +32,7 @@ export default function LiveCamera({exercise}) {
     // Load PoseNet and start detection
     async function loadAndDetectPose() {
       await setupCamera();
-      let config: posenet.ModelConfig = {
+      let config = {
         architecture: "MobileNetV1",
         outputStride: 16,
         inputResolution: { width: 640, height: 480 },
