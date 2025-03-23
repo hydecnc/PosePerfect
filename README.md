@@ -1,9 +1,8 @@
-# Gymmi
+# Pose Perfect
 
-The all in one gym assistant for beginners.
+The all in one live gym assistant.
 
 ## Features
 
 - Posture analysis
-- Real time feedback
-- Rep Suggestions
+- Real time feedback with audio on the fly
