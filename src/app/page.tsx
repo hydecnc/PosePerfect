@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.title}>Gymmi</div>
+        <div className={styles.title}>PosePerfect</div>
         <div className={styles.start}>
           <select
             value={selectedExercise}
