@@ -5,7 +5,7 @@ import { getSideKeypoints } from "./exerciseProcessor"
 import { CohereInstance } from "./cohere"
 
 // in milliseconds
-const poll_interval = 20000
+const poll_interval = 5000
 
 export abstract class ExerciseAnalysis {
   constructor(cohere: CohereInstance) {
@@ -44,7 +44,7 @@ Ensure your analysis:
 
 Important: The squat data is collected from only one side (either left or right), so do not comment on the spacing between the legs.
 
-Please answer the next prompts with short sentences.`
+Please answer the next prompts with short sentences. NO GLAZING, WITHOUT TOO MUCH YAP. NO GLAZE NO YAP. Max 1 sentence.`
   }
 
   reset() {
@@ -56,6 +56,11 @@ Please answer the next prompts with short sentences.`
   }
 
   async evaluate(pose: Pose, cohere: CohereInstance) {
+    let isUpdate = (Date.now() - this.lastPoll > poll_interval);
+    if (isUpdate) {
+      this.lastPoll = Date.now();
+    }
+
     const betterSide = getBetterSide(pose)
 
     if (betterSide == "unknown") {
@@ -77,7 +82,7 @@ Please answer the next prompts with short sentences.`
     }
     this.lastAngle = angleDeg;
 
-    if (Date.now() - this.lastPoll > poll_interval) {
+    if (isUpdate) {
       const lowestAngle = this.lastAngle
       const highestAngle = this.highestAngle
       const angleChanges = this.angleChange.join(", ")

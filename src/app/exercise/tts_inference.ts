@@ -1,3 +1,4 @@
+"use server"
 import * as dotenv from "dotenv";
 dotenv.config(); // Load environment variables from .env
 
@@ -29,7 +30,7 @@ interface TTSOptions {
  * @param options - Optional configuration (number of retries, base delay, and maximum delay).
  * @returns A Promise resolving to a Buffer containing the audio data.
  */
-async function textToSpeech(text: string, options?: TTSOptions): Promise<Buffer> {
+export async function textToSpeech(text: string, options?: TTSOptions): Promise<Buffer> {
   const retries = options?.retries ?? 5;
   const baseDelayMs = options?.baseDelayMs ?? 2000;
   const maxDelayMs = options?.maxDelayMs ?? 20000;
@@ -96,5 +97,5 @@ async function main() {
   }
 }
 
-main();
+// main();
 

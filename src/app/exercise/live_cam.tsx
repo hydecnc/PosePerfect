@@ -11,6 +11,8 @@ import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
 import { CohereInstance } from "./cohere"
 import { SquatExercise } from "./poses"
 import { GetCohereKey } from "./keys"
+import { playAudio } from "./audio"
+import { textToSpeech } from "./tts_inference"
 
 const data_frame: any[] = [];
 
@@ -74,6 +76,9 @@ export default function LiveCamera({exercise}:Props) {
           const result = await exercise.evaluate(pose, cohere);
           if (result) {
             console.log(result)
+            const buffer = await textToSpeech(result);
+            console.log("got buffer", buffer);
+            playAudio(buffer);
           }
           
 
