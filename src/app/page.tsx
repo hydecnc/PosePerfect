@@ -8,7 +8,7 @@ export default function Home() {
         <div className={styles.title}>Gymmi</div>
         <div className={styles.start}>
           <a href="/exercise">
-            <button className={styles.start}>Get started here:</button>
+            <button>Get started here:</button>
           </a>
         </div>
       </main>

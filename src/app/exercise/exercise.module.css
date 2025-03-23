@@ -1,10 +1,10 @@
 .page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+  --gray-rgb: 255, 255, 255;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
+  --button-primary-hover: #ccc;
+  --button-secondary-hover: #1a1a1a;
 
   --gap: 30px;
   --nice-box-border: 2px;
@@ -19,16 +19,6 @@
   font-family: var(--font-geist-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
-}
 .main {
   display: flex;
   flex-direction: row;
@@ -52,19 +42,12 @@
 }
 
 .niceBox {
-  /* border: var(--nice-box-border) solid; */
+  background-color: var(--gray-alpha-200);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 5px;
-  box-shadow:
-    0 4px 6px -1px rgb(0 0 0 / 0 1),
-    0 2px -2px rgb(0 0 0 / 0.1);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   height: 100%;
-  background-color: #f9f9f9;
-}
-
-@media (prefers-color-scheme: dark) {
-  .niceBox {
-    background-color: #353839;
-  }
 }
 
 .exerciseInfo {
