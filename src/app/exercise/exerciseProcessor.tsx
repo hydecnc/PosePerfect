@@ -14,22 +14,20 @@ export function getSideKeypoints(pose: any, side: any) {
 
 export function oneSideData(pose:any, selected:any, data:any) {
 
-      //console.log("Pose in oneSideData", selected);
-      
+    
       const leftHip = pose.keypoints.find((kp:any) => kp.part === "leftHip");
       const leftKnee = pose.keypoints.find((kp:any) => kp.part === "leftKnee");
       const depth = leftHip && leftKnee ? Math.abs(leftHip.position.y - leftKnee.position.y) : 0;
       data.push({
-        shoulder: selected.shoulder.position,
-        elbow: selected.elbow.position,
-        wrist: selected.wrist.position,
-        hip: selected.hip.position,
-        knee: selected.knee.position,
-        ankle: selected.ankle.position,
-        side: selected.side,
+        shoulder: selected.shoulder,
+        elbow: selected.elbow,
+        wrist: selected.wrist,
+        hip: selected.hip,
+        knee: selected.knee,
+        ankle: selected.ankle,
       });
-      console.log("Data in oneSideData", data);
-    
+      
+
 }
 export function twoSideData(pose:any, left:any, right:any, data:any) {
 
@@ -37,24 +35,21 @@ export function twoSideData(pose:any, left:any, right:any, data:any) {
     const leftKnee = pose.keypoints.find((kp:any) => kp.part === "leftKnee");
     const depth = leftHip && leftKnee ? Math.abs(leftHip.position.y - leftKnee.position.y) : 0;
     data.push({
-      shoulder: left.shoulder.position,
-      elbow: left.elbow.position,
-      wrist: left.wrist.position,
-      hip: left.hip.position,
-      knee: left.knee.position,
-      ankle: left.ankle.position,
-      side: left.side,
+      shoulder: left.shoulder,
+      elbow: left.elbow,
+      wrist: left.wrist,
+      hip: left.hip,
+      knee: left.knee,
+      ankle: left.ankle,
     });
     data.push({
-      shoulder: right.shoulder.position,
-      elbow: right.elbow.position,
-      wrist: right.wrist.position,
-      hip: right.hip.position,
-      knee: right.knee.position,
-      ankle: right.ankle.position,
-      side: right.side,
+      shoulder: right.shoulder,
+      elbow: right.elbow,
+      wrist: right.wrist,
+      hip: right.hip,
+      knee: right.knee,
+      ankle: right.ankle,
     });
-    console.log("Data in TWO Sided", data);
   
 }
 

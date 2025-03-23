@@ -7,6 +7,7 @@ import "@tensorflow/tfjs-backend-webgl"; // Ensure this backend is set up
 import { getBetterSide } from "./preprocess"; 
 import {oneSideData, twoSideData, getSideKeypoints} from "./exerciseProcessor"; // import your functions
 import { data } from "@tensorflow/tfjs";
+import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
 
 const data_frame: any[] = [];
 
@@ -20,6 +21,15 @@ export default function LiveCamera({exercise}:Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    let apiInterval: number; // interval ID for cleanup
+
+    // Function to be called every 30 seconds
+    function aiApiCall() {
+      console.log("API CALLED Here");
+      // Optionally, clear the data after calling the API
+      data_frame.splice(0, data_frame.length);
+    }
+
     // Set up the webcam stream
     async function setupCamera() {
       try {
@@ -45,6 +55,10 @@ export default function LiveCamera({exercise}:Props) {
       };
       const net = await posenet.load(config);
 
+      // Start the interval that calls aiApiCall every 10 seconds
+      apiInterval = window.setInterval(() => {
+        aiApiCall();
+      }, 30000);
 
       async function detectPose() {
         if (videoRef.current) {
@@ -56,14 +70,12 @@ export default function LiveCamera({exercise}:Props) {
               if (exercise == "squat" || exercise == "rdl" || exercise == "lunges") {
               
                 // Call your function here
-                console.log("ONE SELECTION: ");
                 const selected = getSideKeypoints(pose, "left" );
         
                 oneSideData(pose, selected, data_frame);
 
               }
               else if (exercise == "pushups" || exercise == "shoulder_press") {
-                console.log("TWO SELECTION: ");
                 const selected_left = getSideKeypoints(pose,  "left" );
                 const selected_right = getSideKeypoints(pose,  "right" );
                 twoSideData(pose, selected_left, selected_right, data_frame);
@@ -81,6 +93,10 @@ export default function LiveCamera({exercise}:Props) {
     }
 
     loadAndDetectPose();
+     // Clean up the interval when the component unmounts
+     return () => {
+      clearInterval(apiInterval);
+    };
   }, []);
 
   return (
