@@ -1,4 +1,5 @@
 "use client";
+require('dotenv').config();
 
 import { useEffect, useRef } from "react";
 import styles from "./exercise.module.css";
@@ -8,6 +9,9 @@ import { getBetterSide } from "./preprocess";
 import {oneSideData, twoSideData, getSideKeypoints} from "./exerciseProcessor"; // import your functions
 import { data } from "@tensorflow/tfjs";
 import { copyModel } from "@tensorflow/tfjs-core/dist/io/model_management";
+import { HfInference } from "@huggingface/inference";
+
+const hf = new HfInference(process.env.REACT_APP_HUGGINGFACE_API_KEY);
 
 const data_frame: any[] = [];
 
@@ -17,6 +21,24 @@ let sideChoice = ""; // store best side
 interface Props {
   exercise: string;
 }
+export async function getSquatFromMistral(data:any, system_prompt: string) {
+  const prompt = JSON.stringify(data);
+  try {
+    const response = await hf.chatCompletion({
+      model: "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      messages: [
+        { role: "system", content: system_prompt },  // Replace SYSTEM_PROMPT with actual prompt if needed
+        { role: "user", content: prompt },
+      ],
+      max_tokens: 1024,
+    });
+    return response.choices[0].message.content;
+  } catch (err) {
+    console.error('Failed to get response from Mistral:', err);
+    return null;  // Return null or appropriate error handling
+  }
+}
+
 export default function LiveCamera({exercise}:Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -24,11 +46,23 @@ export default function LiveCamera({exercise}:Props) {
     let apiInterval: number; // interval ID for cleanup
 
     // Function to be called every 30 seconds
-    function aiApiCall() {
-      console.log("API CALLED Here");
+    
+
+    async function aiApiCall() {
+      console.log(" API KEY:", hf);
+      const system_prompt = "Please analyze the squat form based on this data I got from posenet model";
+      try {
+        console.log('Calling getSquatFromMistral with data:', data_frame);
+        const result = await getSquatFromMistral(data_frame, system_prompt);
+        console.log('Result from Mistral:', result);
+        // Handle the result, e.g., display in the UI or process further
+      } catch (error) {
+        console.error('Error calling getSquatFromMistral:', error);
+      }
       // Optionally, clear the data after calling the API
       data_frame.splice(0, data_frame.length);
     }
+    
 
     // Set up the webcam stream
     async function setupCamera() {
