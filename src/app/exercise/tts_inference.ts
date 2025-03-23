@@ -1,3 +1,4 @@
+"use server"
 import * as dotenv from "dotenv";
 dotenv.config(); // Loads .env into process.env
 
@@ -15,7 +16,7 @@ const API_URL =
  * Sends text to the Hugging Face Inference API for TTS
  * and returns raw audio bytes (WAV format).
  */
-async function textToSpeech(text: string): Promise<Buffer> {
+export async function textToSpeech(text: string): Promise<Buffer> {
   if (!HF_TOKEN) {
     throw new Error("HF_TOKEN not found in environment variables.");
   }
